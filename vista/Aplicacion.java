@@ -13,6 +13,7 @@ public class Aplicacion {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         LibroDAO gestor= new LibroDAO();
+        //int opcion = Integer.parseInt(sc.nextLine());
         
         while(true)
         {
@@ -25,6 +26,7 @@ public class Aplicacion {
             System.out.println("-> Elige una opción: ");
             
             int opcion = sc.nextInt();
+            
             sc.nextLine();
             
             switch(opcion)
@@ -42,7 +44,10 @@ public class Aplicacion {
                     System.out.println("Ingrese la editorial del libro: ");
                     String editorial = sc.nextLine();
                     System.out.println("Ingrese el año de publicación: ");
-                    int anio = sc.nextInt();
+                    String anio = sc.nextLine();
+                    
+                    
+                    
                     
                     Libro libro = new Libro(isbn,titulo, autor, genero,editorial, anio);
                     gestor.agregarLibro(libro, autor, genero, editorial);
@@ -59,14 +64,21 @@ public class Aplicacion {
                         System.out.println("\nLista de Libros: ");
                         for(Libro l: libros)
                         {
-                            System.out.println("l");
+                            System.out.println(l);
                         }
                     }
                     break;
                 case 3: 
                     System.out.println("Ingrese el ID del libro a eliminar: ");
-                    int id=sc.nextInt();
-                    gestor.eliminarLibro(id);
+                    String isbnElim =sc.nextLine();
+                    if(gestor.eliminarLibro(isbnElim))
+                    {
+                        System.out.println("Libro eliminado correctamente.");
+                    }
+                    else
+                    {
+                        System.out.println("No se pudo eliminar el libro.");
+                    }
                     break;
                 case 4: 
                     System.out.println("👋🏼 see you soon 💋");

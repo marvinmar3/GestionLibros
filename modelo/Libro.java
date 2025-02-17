@@ -11,9 +11,9 @@ public class Libro {
     private String autor;
     private String genero;
     private String editorial;
-    private int anioPub;
+    private String anioPub;
 
-    public Libro(String isbn, String titulo, String autor,String genero, String editorial, int anioPub) {
+    public Libro(String isbn, String titulo, String autor,String genero, String editorial, String anioPub) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
@@ -46,11 +46,11 @@ public class Libro {
         this.autor = autor;
     }
 
-    public int getAnioPub() {
+    public String getAnioPub() {
         return anioPub;
     }
 
-    public void setAnioPub(int anioPub) {
+    public void setAnioPub(String anioPub) {
         this.anioPub = anioPub;
     }
 

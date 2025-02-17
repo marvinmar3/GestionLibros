@@ -16,14 +16,14 @@ public class LibroDAO {
     //agregar un libro a la bd
     public boolean agregarLibro(Libro libro, String nombreAutor, String nombreGenero, String nombreEditorial)
     {
-        String buscarAutor= "select id_autor from Autor where nombre ?";
-        String insertarAutor = "insert into Autor(nombre) values (?)";
+        String buscarAutor= "select id_autor from Autor where nombre_autor = ?";
+        String insertarAutor = "insert into Autor(nombre_autor) values (?)";
         
-        String buscarGenero= "select id_genero from Genero where nombre = ?";
-        String insertarGenero = "insert into Genero(nombre) values(?)";
+        String buscarGenero= "select id_genero from Genero where nombre_genero = ?";
+        String insertarGenero = "insert into Genero(nombre_genero) values(?)";
         
-        String buscarEditorial="select id_editorial from Editorial where nombre = ?";
-        String insertarEditorial = "insert into Editorial(nombre) values (?)";
+        String buscarEditorial="select id_editorial from Editorial where nombre_edi = ?";
+        String insertarEditorial = "insert into Editorial(nombre_edi) values (?)";
         
         String insertarLibro= "insert into Libro(isbn, nombre_lib, r_autor, r_genero,r_editorial, anio_publicacion) values (?,?,?,?,?,?)";
         try(Connection conn= Conexion.getConnection())
@@ -41,12 +41,17 @@ public class LibroDAO {
                 stmtLibro.setInt(3, idAutor);
                 stmtLibro.setInt(4, idGenero);
                 stmtLibro.setInt(5, idEditorial);
-                stmtLibro.setInt(6, libro.getAnioPub());
+                stmtLibro.setString(6, libro.getAnioPub());
                 
                 int filasAfectadas = stmtLibro.executeUpdate();
                 conn.commit();
                 
                 return filasAfectadas >0;
+            }catch(SQLException e)
+            {
+                conn.rollback();
+                e.printStackTrace();
+                return false;
             }
         }catch(SQLException e)
         {
@@ -112,7 +117,7 @@ public class LibroDAO {
                         rs.getString("nombre_autor"),
                         rs.getString("nombre_genero"),
                         rs.getString("nombre_edi"),
-                        rs.getInt("anio_publicacion")
+                        rs.getString("anio_publicacion")
                 );
                  
                 libros.add(libro);
@@ -125,14 +130,14 @@ public class LibroDAO {
     }
     
     //eliminar libro por id
-    public boolean eliminarLibro(long isbn)
+    public boolean eliminarLibro(String isbn)
     {
-        String consulta = "delete from libros where isbn = ?";
+        String consulta = "delete from Libro where isbn = ?";
         
         try(Connection conn= Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(consulta))
         {
-            stmt.setInt(1, (int) isbn);
+            stmt.setString(1, isbn);
             return stmt.executeUpdate() > 0;
             //System.out.println("😍Libro eliminado correctamente");
             
@@ -143,7 +148,4 @@ public class LibroDAO {
         }
     }
 
-    private int idAutor() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
